@@ -4,27 +4,220 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Seiger Workshop 2021</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="reveal/dist/reset.css">
+		<link rel="stylesheet" href="reveal/dist/reveal.css">
+		<link rel="stylesheet" href="theme/pyrocko.css" id="theme">
+		<!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
 
 		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		<link rel="stylesheet" href="theme/highlight/gruvbox-light.css" id="highlight-theme">
 	</head>
+    <style>
+.annot {
+    font-style: italic;
+    color: #ffbbaa;
+    padding-left: 1em;
+}
+
+.grayout {
+    opacity: 0.2; /* Real browsers */
+    filter: alpha(opacity = 60); /* MSIE */
+}
+
+.links {
+    border-top: 1px solid #665544;
+    padding-top: 0.5em;
+    font-size: 70%;
+    color: #aaaa88;
+    margin-top: 2em;
+    width: 100%;
+}
+
+.links li {
+    list-style-type: none;
+    display: inline-block;
+    margin-right:1em;
+}
+
+.links a {
+    color: #aaaa88;
+}
+
+.editor {
+    margin: 1em;
+    border: 1px solid #665544;
+    border-radius: 0.2em;
+    background-color: #333322;
+}
+code.inline {
+    font-size: 80%;
+    background-color: #444435;
+    color: #ccccaa;
+}
+
+em {
+    color: #ccaa33;
+}
+
+.small {
+    font-size: 70%;
+}
+
+div.fbox {
+  display: flex;
+  vertical-align: top;
+  justify-content: space-evenly;
+}
+
+div.fitem {
+    flex-grow: 1;
+}
+    </style>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+                    <h2>Seiger Workshop 2021</h2>
+										<h2>Detector update and Moment Tensor ML</h2>
+
+                    <p style="font-size:50%">Andreas Steinberg and Peter Gaebler</p>
+                    <div class="links">
+											<img src="figures/ptj.jpg" style="height: 2em;"/>
+											<img src="figures/bgr.jpg" style="height: 2em;"/>
+											<img src="figures/seiger.jpg" style="height: 2em;"/>
+
+                    </div>
+                </section>
+
+								<section>
+                    <section id="Improved correlation detector">
+                        <h2>Improved correlation detector</h2>
+                    </section>
+
+								<section>
+                    <div class="fbox" style="vertical-align: top; width: 100%;">
+                        <div class="fitem">
+                            <h4>Improved legacy (MAGS) detector</h4>
+                            <ul>
+															<li>old master events kept </li>
+                                <li>21 new master events (2015+)</li>
+																<li>29 total master events</li>
+																<li>3 master Strasburg events</li>
+                            </ul>
+                        </div>
+
+                </section>
+
+
+								<section>
+									<h4>36 detections since station deployment</h4>
+									<img src="figures/all_evets.png" style="height: 12em;"/>
+                </section>
+
+								<section>
+									<h4>11 in Landau and Insheim</h4>
+									<img src="figures/geo_only.png" style="height: 12em;"/>
+                </section>
+
+								<section data-background-video="figures/new_events_larger_NOTime_end_awile.mp4" data-background-video-muted>
+								</section>
+
+							</section>
+
+
+
+                <section>
+                    <section id="ML">
+                        <h2>Estimation of moment tensors with machine learning </h2>
+
+                        <div class="links">
+                            <ul>
+                                <li>★ <a href="https://pyrocko.org/docs/current/library/examples/index.html">Example Notebook</a>
+                            </ul>
+                        </div>
+                    </section>
+
+										<section>
+											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
+											<div class="fitem">
+													<ul>
+														<li>estimation of Moment tensor in seconds (shakemaps)</li>
+															<li class="grayout">BNN, data and model uncertainties</li>
+															<li class="grayout">Talk @DGG, Test 2019 Ridgecrest sequence</li>
+
+													</ul>
+											</div>
+											<img src="figures/shakemap.jpg" style="height: 8em;"/>
+		                </section>
+
+										<section>
+											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
+											<div class="fitem">
+													<ul>
+														<li class="grayout">estimation of Moment tensor in seconds (shakemaps)</li>
+															<li>BNN, data and model uncertainties</li>
+															<li class="grayout">Talk @DGG, Test 2019 Ridgecrest sequence</li>
+
+													</ul>
+											</div>
+											<img src="figures/bnn.png" style="height: 8em;"/>
+		                </section>
+
+
+										<section>
+											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
+											<div class="fitem">
+													<ul>
+														<li class="grayout">estimation of Moment tensor in seconds (shakemaps)</li>
+															<li class="grayout">BNN, data and model uncertainties</li>
+															<li >Talk @DGG, Test 2019 Ridgecrest sequence</li>
+
+													</ul>
+											</div>
+											<img src="figures/bnn.png" style="height: 8em;"/>
+		                </section>
+
+
+
+										<section data-transition="fade">
+                        <h6>Application to recent Landau event</h6>
+
+                        <pre><code class="bash" data-trim data-noescape>
+													Time: 2020-11-09 21:47:07.800
+													Latitude [deg]: 49.149
+													Longitude [deg]: 8.131
+													Depth [km]: 4
+													Magnitude: 1.5
+                        </code></pre>
+
+                    </section>
+
+
+										<section>
+											<img src="figures/automap_landau.pdf.png" style="height: 14em;"/>
+		                </section>
+
+
+										<section>
+											<h5>Allows for analysis of non DC components</h5>
+		                    <div class="fbox" style="vertical-align: top; width: 100%;">
+													<img src="figures/lune.png" style="height: 12em;"/>
+
+		                        </div>
+
+		                </section>
+
+                </section>
+
 			</div>
 		</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
+		<script src="reveal/dist/reveal.js"></script>
+		<script src="reveal/plugin/notes/notes.js"></script>
+		<script src="reveal/plugin/markdown/markdown.js"></script>
+		<script src="reveal/plugin/highlight/highlight.js"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
