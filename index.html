@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Seiger Workshop 2021</title>
+		<title>Estimating Seismic Moment Tensors based on Bayesian Machine Learning, Steinberg et al., @dgg2021</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="reveal/dist/reset.css">
+		<link rel="stylesheet" href="reveal/dist/reveal.css">
 		<link rel="stylesheet" href="theme/pyrocko.css" id="theme">
 		<!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
 
@@ -19,11 +19,6 @@
     font-style: italic;
     color: #ffbbaa;
     padding-left: 1em;
-}
-
-.grayout {
-    opacity: 0.2; /* Real browsers */
-    filter: alpha(opacity = 60); /* MSIE */
 }
 
 .links {
@@ -45,6 +40,36 @@
     color: #aaaa88;
 }
 
+.grayout {
+    opacity: 0.2; /* Real browsers */
+    filter: alpha(opacity = 60); /* MSIE */
+}
+.narrow p
+{
+margin: 5px 0;
+}
+
+.narrow li
+{
+font-size: xx-large;
+}
+
+.narrow blockquote
+{
+width: 90%;
+margin: 10px auto;
+padding: 10px;
+}
+
+.narrow td
+{
+font-size: 26pt;
+}
+
+.narrow pre
+{
+width: 500px;
+}
 .editor {
     margin: 1em;
     border: 1px solid #665544;
@@ -74,150 +99,351 @@ div.fbox {
 div.fitem {
     flex-grow: 1;
 }
+
     </style>
 	<body>
 		<div class="reveal">
 			<div class="slides">
 				<section>
-                    <h2>Seiger Workshop 2021</h2>
-										<h2>Detector update and Moment Tensor ML</h2>
+										<h2>Estimating Seismic Moment Tensors based on Bayesian Machine Learning</h2>
+                    <p style="font-size:50%">Andreas Steinberg&sup1, Hannes Vasyura-Bathke&sup2&sup3, Peter Gaebler&sup1, Matthias Ohrnberger&sup2 and Lars Ceranna&sup1</p>
+										<p style="font-size:40%">1 Bundesanstalt für Geowissenschaften und Rohstoffe (BGR), B4.3 Erdbebendienst des Bundes, Kernwaffenteststopp
+											<p style="font-size:40%">2 University of Potsdam, Institute for Earth and Environmental Sciences
+												<p style="font-size:40%">3 King Abdullah University of Science and Technology
 
-                    <p style="font-size:50%">Andreas Steinberg and Peter Gaebler</p>
-                    <div class="links">
-											<img src="figures/ptj.jpg" style="height: 2em;"/>
-											<img src="figures/bgr.jpg" style="height: 2em;"/>
-											<img src="figures/seiger.jpg" style="height: 2em;"/>
-
+							      <div class="links">
+											<img src="figures/bgr.jpg" style="height: 3em;"/>
+											<img src="figures/up_logo_math_2.png" style="height: 3em;"/>
+											<img src="figures/seiger.jpg" style="height: 3em;"/>
+											<img src="figures/ptj.jpg" style="height: 3em;"/>
                     </div>
-                </section>
+										<aside class="notes">
+											<p> Hello.</p>
+											<p>Second line</p>
+										</aside>
+        </section>
+
+				<section>
+						<section id="Motivation">
+							<h5>Motivation</h5>
+						</section>
+
+
+						<section>
+							<h4>Full seismic moment tensors</h4>
+							<div class="fitem">
+									<ul>
+										<li>non-linear, non-unique inversion problem between synthetics and observed data</li>
+										<li>inversion > tens of minutes, e.g. <a href="https://pyrocko.org/grond/docs/current/">Grond</a> or <a href="https://hvasbath.github.io/beat/index.html">Beat</a> </li>
+										<li>Catalogs (e.g. GCMT and USGS) provide MT solutions in >hours for Mw >4.5 </li>
+
+									</ul>
+							</div>
+							<img src="figures/non-linear.svg" style="height: 5em;"/>
+						</section>
+
+
+						<section>
+							<h4><u>Fast</u> estimation of seismic moment tensors necessary for:</h4>
+							<div class="fitem">
+									<ul>
+										<li>Earthquake early warning systems, i.e. shakemaps</li>
+										<li>Physics based fore- and aftershock analysis</li>
+										<li>Monitoring of geothermal stimulations</li>
+
+									</ul>
+							</div>
+							<img src="figures/shakemap.jpg" style="height: 8em;"/>
+						</section>
+
+
+						<section>
+							<h4>Machine Learning</h4>
+							<div class="fitem">
+									<ul>
+										<li>input: images and assoicated labels</li>
+										<li>learning features of by layered convolutions with kernels</li>
+										<li>kernel size and number of filters vary from layer to layer</li>
+										<li>output: model able to predict label given unseen data</li>
+									</ul>
+							</div>
+						</section>
+
+
+						<section>
+							<h4>Machine Learning</h4>
+							<div class="fitem">
+									<ul>
+										<li>Deep convolutional ML learns the features of images as weights of Neural Networks </li>
+										<li>proven fast for seismic signal analysis (e.g. Kriegerowski et al., 2019) </li>
+										<li>recent advances allow for distributions of weights </li>
+									</ul>
+							</div>
+							<img src="figures/cnn-bnn.svg" style="height: 8em;"/>
+						</section>
+
+
+
+				</section>
+
+
+											<section>
+												<section id="InputTraining">
+													<h5>Training Input</h5>
+												</section>
+												<section >
+													<div class="fitem">
+															<ul>
+																<li>training on synthetic waveforms from a volume of potential source locations</li>
+																<li>advantage: controll over source and targets</li>
+																<li>using pre-calculated Green's function stores (<a href="https://pyrocko.org">Pyrocko</a> and QSEIS)</li>
+															</ul>
+													</div>
+													<img src="figures/gf_store.svg" style="height: 6em;"/>
+												</section>
+												<section>
+													<div class="fitem">
+															<ul>
+																<li>CNN optimised for images</li>
+																<li>Amplitudes vary for different sources</li>
+																<li>&#x2192;no direct use of the waveform arrays for training</li>
+
+															</ul>
+													</div>
+													<img src="figures/input0.svg" style="height: 12em;"/>
+												</section>
+												<section>
+													<h4>Normalized input for a single earthqauke source</h4>
+
+													<img src="figures/input.svg" style="height: 12em;"/>
+												</section>
+											</section>
+
+												<section>
+													<section id="Labels">
+														<h5>Labels</h5>
+													</section>
+
+
+													<section>
+													<div class="fbox" style="vertical-align: top; width: 100%;">
+			                        <div class="fitem">
+			                            <h4>Using the Lune paramterziation of the MT</h4>
+																	<ul>
+																		<li>only 5 unique paramters (&kappa;, &sigma;, h, w, v)</li>
+																		<li>cartesian coordinate system</li>
+																		<li>v=0 and w=0 -> isotropic source</li>
+																		<li> no scaling with &rho; because of normalized input</li>
+																	</ul>
+			                                <img src="figures/lune.svg" style="height: 8em;"/>
+			                        </div>
+												</section>
+
+												<section>
+												<div class="fbox" style="vertical-align: top; width: 100%;">
+														<div class="fitem">
+																<h4>For each potential source location in the grid:</h4>
+																<ul>
+																<li>steps: 0.1&pi; for &kappa;, 0.2 for &sigma;, h and w and 0.02 for v</li>
+																	<li>171.600 waveform datasets</li>
+																	<li>196 gridpoints for the test dataset</li>
+																</ul>
+														</div>
+											</section>
+
+
+											</section>
+
+
+				<section>
+					<section id="BNN">
+						<h5>BNN</h5>
+					</section>
+
+
+					<section>
+						<h4>Variational inference (Bayesian) Machine Learning approach</h4>
+						<img src="figures/scheme_rework.svg" style="height: 12em;"/>
+					</section>
+
 
 								<section>
-                    <section id="Improved correlation detector">
-                        <h2>Improved correlation detector</h2>
-                    </section>
-
-								<section>
-                    <div class="fbox" style="vertical-align: top; width: 100%;">
-                        <div class="fitem">
-                            <h4>Improved legacy (MAGS) detector</h4>
-                            <ul>
-															<li>old master events kept </li>
-                                <li>21 new master events (2015+)</li>
-																<li>29 total master events</li>
-																<li>3 master Strasburg events</li>
-                            </ul>
-                        </div>
-
-                </section>
-
-
-								<section>
-									<h4>36 detections since station deployment</h4>
-									<img src="figures/all_evets.png" style="height: 12em;"/>
-                </section>
-
-								<section>
-									<h4>11 in Landau and Insheim</h4>
-									<img src="figures/geo_only.png" style="height: 12em;"/>
-                </section>
-
-								<section data-background-video="figures/new_events_larger_NOTime_end_awile.mp4" data-background-video-muted>
+									<h4>Network design</h4>
+									<div class="fitem">
+											<ul>
+											<li>loss function: neg. log-likliehood</li>
+												<li>optimizer: Adam, RELu activations</li>
+												<li>Flipout layer</li>
+											</ul>
+									</div>
+									<img src="figures/bnn_presentation_full_all.svg" style="height: 8em;"/>
 								</section>
 
+
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_-1.png" style="height: 14em;"/>
+								</section>
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_0.png" style="height: 14em;"/>
+								</section>
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_1.png" style="height: 14em;"/>
+								</section>
+
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_2.png" style="height: 14em;"/>
+								</section>
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_3.png" style="height: 14em;"/>
+								</section>
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_4.png" style="height: 14em;"/>
+								</section>
+
+
+								<section>
+									<h4>Network design</h4>
+									<img src="figures/bnn_presentation_full_5.png" style="height: 14em;"/>
+								</section>
 							</section>
 
 
 
-                <section>
-                    <section id="ML">
-                        <h2>Estimation of moment tensors with machine learning </h2>
-
-                        <div class="links">
-                            <ul>
-                                <li>★ <a href="https://git.pyrocko.org/asteinbe/notebook-mt-ml/src/branch/master/01_training_single_gridpoint.ipynb">Example Notebook</a>
-                            </ul>
-                        </div>
-                    </section>
-
-										<section>
-											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
-											<div class="fitem">
-													<ul>
-														<li>estimation of Moment tensor in seconds (shakemaps)</li>
-															<li class="grayout">BNN, data and model uncertainties</li>
-															<li class="grayout">Talk @DGG, Test 2019 Ridgecrest sequence</li>
-
-													</ul>
-											</div>
-											<img src="figures/shakemap.jpg" style="height: 8em;"/>
-		                </section>
-
-										<section>
-											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
-											<div class="fitem">
-													<ul>
-														<li class="grayout">estimation of Moment tensor in seconds (shakemaps)</li>
-															<li>BNN, data and model uncertainties</li>
-															<li class="grayout">Talk @DGG, Test 2019 Ridgecrest sequence</li>
-
-													</ul>
-											</div>
-											<img src="figures/bnn.png" style="height: 8em;"/>
-		                </section>
-
-
-										<section>
-											<h4>Variational inference (Bayesian) Machine Learning approach</h4>
-											<div class="fitem">
-													<ul>
-														<li class="grayout">estimation of Moment tensor in seconds (shakemaps)</li>
-															<li class="grayout">BNN, data and model uncertainties</li>
-															<li >Talk @DGG, Test 2019 Ridgecrest sequence</li>
-
-													</ul>
-											</div>
-											<img src="figures/bnn.png" style="height: 8em;"/>
-		                </section>
-
-
-
-										<section data-transition="fade">
-                        <h6>Application to recent Landau event</h6>
-
-                        <pre><code class="bash" data-trim data-noescape>
-													Time: 2020-11-09 21:47:07.800
-													Latitude [deg]: 49.149
-													Longitude [deg]: 8.131
-													Depth [km]: 4
-													Magnitude: 1.5
-                        </code></pre>
-
-                    </section>
-
-
-										<section>
-											<img src="figures/automap_landau.pdf.png" style="height: 14em;"/>
-		                </section>
-
-
-										<section>
-											<h5>Allows for analysis of non DC components</h5>
-		                    <div class="fbox" style="vertical-align: top; width: 100%;">
-													<img src="figures/lune.png" style="height: 12em;"/>
-
-		                        </div>
-
-		                </section>
-
+								<section>
+									<section id="Ridgecrest">
+										<h5>Test and validation with unseen data of the the 2019 Ridgecrest sequence</h5>
+									</section>
+									<section  data-background-video="figures/ridgecrest_sequence.mp4" data-background-video-muted>
+									</section>
+									<section data-background-video="figures/stations_grid_zoom.mp4" data-background-video-muted>
+									</section>
                 </section>
+
+										<section>
+											<section  id="MomentTensor">
+												<h5>Comparison of predictions and 8 SCEDC catalog moment tensors</h5>
+											</section>
+											<section data-background-video="figures/mts.mp4" data-background-video-muted>
+											</section>
+
+											<section>
+												<h4>Realtive omega angle distance as comparison measure</h4>
+												<img src="figures/omega_angle.svg" style="height: 8em;"/>
+
+											</section>
+
+											<section>
+												<video data-autoplay src="figures/mts_time_figs/output.webm"></video>
+											</section>
+
+                    </section>
+
+												<section>
+													<section  id="dcs">
+														<h5>Comparison of predictions and 196 SCEDC catalog focal mechanisms (Mw 2.7 to 4.5)</h5>
+													</section>
+													<section  data-background-video="figures/dcs.mp4" data-background-video-muted>
+													</section>
+
+
+
+													<section>
+														<img src="figures/dc_hist_mag.svg" style="height: 8em;"/>
+													</section>
+
+		                    </section>
+
+												<section>
+												<section id="conclusions">
+													<h4>Conclusions</h4>
+													<div class="fitem">
+															<ul>
+																<li>ML can be applied to determine MTs</li>
+																	<li class="grayout">Sucessfully reproduce indepently determined MTs</li>
+																	<li class="grayout">Variational Machine learning is useful</li>
+															</ul>
+													</div>
+												</section>
+												<section>
+													<h4>Conclusions</h4>
+													<div class="fitem">
+															<ul>
+																<li class="grayout">ML can be applied to determine MTs</li>
+																	<li >Sucessfully reproduce indepently determined MTs</li>
+																	<li class="grayout">Variational Machine learning is useful</li>
+															</ul>
+													</div>
+												</section>
+												<section>
+													<h4>Conclusions</h4>
+													<div class="fitem">
+															<ul>
+																<li class="grayout">ML can be applied to determine MTs</li>
+																	<li class="grayout">Sucessfully reproduce indepently determined MTs</li>
+																	<li >Variational Machine learning is useful</li>
+															</ul>
+													</div>
+												</section>
+											</section>
+
+											<section>
+												<section id="appendix">
+													<h5>Appendix</h5>
+
+												</section>
+												<section>
+													<img src="figures/velocity_models.svg" style="height: 8em;"/>
+												</section>
+
+
+												<section class="narrow" data-markdown>
+																<script type="text/template">
+														| Parameter       | Interpretation           | Bounds  |
+														| :-------------: |:-------------:| :-----:|
+														| w      | Lune latitude delta transformed to grid | -3/8pi <= w <=3/8pi |
+														| v      | Lune co-longitude transformed to grid      |   -1/3 <= v <= 1/3 |
+														| kappa | Strike angle equivalent of moment tensor plane     |    0 <= kappa <= 2pi |
+														| sigma | Rake angle equivalent of moment tensor slip angle.     |    -pi/2 <= sigma <= pi/2 |
+														| h | Dip angle equivalent of moment tensor plane     |    0 <= h <= 1 |
+													</script>
+												</section>
+
+												<section>
+													<img src="figures/dc_hist_vw.svg" style="height: 8em;"/>
+												</section>
+											<section>
+												<img src="figures/dc_hist_no_vw.svg" style="height: 8em;"/>
+											</section>
+
+									<section>
+										<img src="figures/dc_1.svg" style="height: 8em;"/>
+										<img src="figures/dc_2.svg" style="height: 8em;"/>
+										<img src="figures/dc_3.svg" style="height: 8em;"/>
+
+									</section>
+
+								</section>
+
 
 			</div>
 		</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
+		<script src="reveal/dist/reveal.js"></script>
+		<script src="reveal/plugin/notes/notes.js"></script>
+		<script src="reveal/plugin/markdown/markdown.js"></script>
+		<script src="reveal/plugin/highlight/highlight.js"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/

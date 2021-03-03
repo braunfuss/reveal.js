@@ -1,0 +1,1 @@
+ffmpeg -start_number 0 -r 1/5 -i mts_single_vel_%d.png -framerate 0.02 -vcodec mpeg4 test.avi
