@@ -9,6 +9,19 @@
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="theme/pyrocko.css" id="theme">
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<script>
+		  Reveal.initialize({
+		    math: {
+		      mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+		      config: 'TeX-AMS_HTML-full',
+		      // pass other options into `MathJax.Hub.Config()`
+		      TeX: { Macros: { RR: "{\\bf R}" } }
+		    },
+		    plugins: [ RevealMath ]
+		  });
+		</script>
 		<!--<link rel="stylesheet" href="dist/theme/moon.css" id="theme">-->
 
 		<!-- Theme used for syntax highlighted code -->
@@ -66,6 +79,8 @@ padding: 10px;
 font-size: 26pt;
 }
 
+.MathJax { font-size: 0.8em !important; }
+
 .narrow pre
 {
 width: 500px;
@@ -119,13 +134,17 @@ div.fitem {
                     </div>
 										<aside class="notes">
 											<p> Hello.</p>
-											<p>Second line</p>
 										</aside>
         </section>
 
 				<section>
 						<section id="Motivation">
 							<h5>Motivation</h5>
+							<aside class="notes">
+								<p> Today i want to present to you not only a framework for applying machine learning in seismology to determine MTs.</p>
+								<p> I also want to advocate that ML does not have to be a blackbox.</p>
+
+							</aside>
 						</section>
 
 
@@ -201,17 +220,35 @@ div.fitem {
 													</div>
 													<img src="figures/gf_store.svg" style="height: 6em;"/>
 												</section>
+
+
+
 												<section>
 													<div class="fitem">
 															<ul>
 																<li>CNN optimised for images</li>
-																<li>Amplitudes vary for different sources</li>
-																<li>&#x2192;no direct use of the waveform arrays for training</li>
+																<li>Amplitudes vary for different sources-distances</li>
+																&#x2192;no direct use of the waveform arrays for training
 
 															</ul>
 													</div>
 													<img src="figures/input0.svg" style="height: 12em;"/>
+													<aside class="notes">
+														<p> filter between 1 and 5.4 Hz; cutout</p>
+													</aside>
 												</section>
+
+												<section>
+													<div class="fitem">
+															<ul>
+																<li>filter waveforms (bandpass 1-5.4 Hz)</li>
+																<li>cut 1s before first phase onset</li>
+																<li>cut 3.5s after first phase onset</li>
+															</ul>
+													</div>
+
+												</section>
+
 												<section>
 													<h4>Normalized input for a single earthqauke source</h4>
 
@@ -239,19 +276,6 @@ div.fitem {
 			                        </div>
 												</section>
 
-												<section>
-												<div class="fbox" style="vertical-align: top; width: 100%;">
-														<div class="fitem">
-																<h4>For each potential source location in the grid:</h4>
-																<ul>
-																<li>steps: 0.1&pi; for &kappa;, 0.2 for &sigma;, h and w and 0.02 for v</li>
-																	<li>171.600 waveform datasets</li>
-																	<li>196 gridpoints for the test dataset</li>
-																</ul>
-														</div>
-											</section>
-
-
 											</section>
 
 
@@ -260,20 +284,28 @@ div.fitem {
 						<h5>BNN</h5>
 					</section>
 
-
 					<section>
-						<h4>Variational inference (Bayesian) Machine Learning approach</h4>
-						<img src="figures/scheme_rework.svg" style="height: 12em;"/>
+						<h4>Network design </h4>
+						<div class="fitem">
+								<ul>
+								<li>All models are wrong, but some are useful</li>
+									<li>Train our networks to say: "I dont know"</li>
+									<li>robust estimations necessary for operational hazard frameworks</li>
+								</ul>
+						</div>
+						<aside class="notes">
+							<p> Geophyiscs always at the forefront of estimation of model robustnes.</p>
+						</aside>
 					</section>
 
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Network design - keep it simple</h4>
 									<div class="fitem">
 											<ul>
-											<li>loss function: neg. log-likliehood</li>
+											<li>loss function: neg. log-likeliehood</li>
 												<li>optimizer: Adam, RELu activations</li>
-												<li>Flipout layer</li>
+												<li>Flipout layer (Wen, 2018), tfp</li>
 											</ul>
 									</div>
 									<img src="figures/bnn_presentation_full_all.svg" style="height: 8em;"/>
@@ -282,43 +314,47 @@ div.fitem {
 
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_-1.png" style="height: 14em;"/>
 								</section>
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_0.png" style="height: 14em;"/>
 								</section>
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_1.png" style="height: 14em;"/>
 								</section>
 
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_2.png" style="height: 14em;"/>
 								</section>
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_3.png" style="height: 14em;"/>
 								</section>
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_4.png" style="height: 14em;"/>
 								</section>
 
 
 								<section>
-									<h4>Network design</h4>
+									<h4>Blackbox? Example activations</h4>
 									<img src="figures/bnn_presentation_full_5.png" style="height: 14em;"/>
 								</section>
-							</section>
 
+							<section>
+								<h4>Variational inference (Bayesian) Machine Learning approach</h4>
+								<img src="figures/scheme_rework.svg" style="height: 12em;"/>
+							</section>
+						</section>
 
 
 								<section>
@@ -339,10 +375,14 @@ div.fitem {
 											</section>
 
 											<section>
-												<h4>Realtive omega angle distance as comparison measure</h4>
+											  <h5>Omega angle distance measure</h5>
+											  \[\begin{aligned}
+												d = \frac{1}{2}\Bigg[1-\frac{U_{1}\cdot U_{2}}{||U_{1}||||U_{2}||}\Bigg] = \frac{1}{2}\Bigg[1-\frac{\sum U_{1_{ij}}\cdot U_{2_{ij}}}{(\sum U^2_{1_{ij}})^{\frac{1}{2}} (U^2_{2_{ij}})^{\frac{1}{2}}}\Bigg]
+											  \end{aligned} \]
 												<img src="figures/omega_angle.svg" style="height: 8em;"/>
-
+												<p>after Tape and Tape, 2012</p>
 											</section>
+
 
 											<section>
 												<video data-autoplay src="figures/mts_time_figs/output.webm"></video>
@@ -370,30 +410,54 @@ div.fitem {
 													<h4>Conclusions</h4>
 													<div class="fitem">
 															<ul>
-																<li>ML can be applied to determine MTs</li>
-																	<li class="grayout">Sucessfully reproduce indepently determined MTs</li>
-																	<li class="grayout">Variational Machine learning is useful</li>
+																<li>ML can be applied to determine full MTs</li>
+																	<li class="grayout">sucessfully reproduce indepently determined MTs for subset of Ridgecrest earthquakes</li>
 															</ul>
 													</div>
 												</section>
 												<section>
+
 													<h4>Conclusions</h4>
 													<div class="fitem">
 															<ul>
-																<li class="grayout">ML can be applied to determine MTs</li>
-																	<li >Sucessfully reproduce indepently determined MTs</li>
-																	<li class="grayout">Variational Machine learning is useful</li>
+																<ul>
+																	<li class="grayout"> ML can be applied to determine full MTs</li>
+																		<li>sucessfully reproduce indepently determined MTs for subset of Ridgecrest earthquakes</li>
+																</ul>
 															</ul>
 													</div>
 												</section>
 												<section>
-													<h4>Conclusions</h4>
+
+													<h4>General takeaway</h4>
 													<div class="fitem">
 															<ul>
-																<li class="grayout">ML can be applied to determine MTs</li>
-																	<li class="grayout">Sucessfully reproduce indepently determined MTs</li>
-																	<li >Variational Machine learning is useful</li>
+																<li> (Bayesian) Variational Machine Learning can be useful in geophysics</li>
+																<li class="grayout">ML != black box (if you do not make it one)</li>
 															</ul>
+													</div>
+
+												</section>
+
+												<section>
+
+													<h4>General takeaway</h4>
+													<div class="fitem">
+															<ul>
+																<li class="grayout"> (Bayesian) Variational ML can be useful in geophysics</li>
+																<li >ML != black box (if you do not make it one)</li>
+															</ul>
+													</div>
+
+												</section>
+
+												<section>
+
+													<video data-autoplay src="figures/ridgecrest_sequence.mp4"></video>
+
+													Thank you!
+													<div class="links">
+														<img src="figures/bgr.jpg" style="height: 1.5em;"/>
 													</div>
 												</section>
 											</section>
@@ -407,6 +471,17 @@ div.fitem {
 													<img src="figures/velocity_models.svg" style="height: 8em;"/>
 												</section>
 
+												<section>
+												<div class="fbox" style="vertical-align: top; width: 100%;">
+														<div class="fitem">
+																<h4>For each potential source location in the grid:</h4>
+																<ul>
+																<li>steps: 0.1&pi; for &kappa;, 0.2 for &sigma;, h and w and 0.02 for v</li>
+																	<li>171.600 waveform datasets</li>
+																	<li>196 gridpoints for the test dataset</li>
+																</ul>
+														</div>
+											</section>
 
 												<section class="narrow" data-markdown>
 																<script type="text/template">
@@ -434,6 +509,13 @@ div.fitem {
 
 									</section>
 
+
+									<section>
+										<img src="figures/fits.svg" style="height: 17em;"/>
+
+
+									</section>
+
 								</section>
 
 
@@ -457,4 +539,3 @@ div.fitem {
 		</script>
 	</body>
 </html>
-
