@@ -219,6 +219,10 @@ div.fitem {
 															</ul>
 													</div>
 													<img src="figures/gf_store.svg" style="height: 6em;"/>
+														<aside class="notes">
+															<p>As input for we use synthetic displacement waveform data calculated for specific earthquake source and for all considered stations and E, N and Z components. 
+For the fast forward calculations of the synthetic waveforms we use pre-calculated Green’s functions stores. They are based on a 1-D velocity model and using the Pyrocko software framework \citep{heimann2017pyrocko, heimann2019python} and the reflectivity-type wavenumber integration method code QSEIS \citep{wang1999simple}. We calculate three different Green's function stores, one based on a 1-D velocity model for the entire Mojave Region used by the USGS and the SCEDC,</p>
+														</aside>
 												</section>
 
 
@@ -358,6 +362,9 @@ div.fitem {
 							<section>
 								<h4>Variational inference (Bayesian) Machine Learning approach</h4>
 								<img src="figures/scheme_rework.svg" style="height: 12em;"/>
+								<aside class="notes">
+											<p> The moment magnitude is not needed as prior information beforehand for our approach, as all waveforms are normalized. The magnitude of the earthquake can be readily estimated by other methods and approaches \citep{van2020automated}. As a prior knowledge for our inputs the approximate earthquakes location is needed. This has been shown to be deliverable fast by other already established machine learning based algorithms \citep{kriegerowski2019deep,mousavi2020earthquake}. </p>
+									</aside>
 							</section>
 						</section>
 
