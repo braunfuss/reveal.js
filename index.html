@@ -312,7 +312,7 @@ div.fitem {
 																			<aside class="notes">
 											<p>This layer creates a convolution kernel that is convolved (actually cross-correlated) with the layer input to produce a tensor of outputs. It may also include a bias addition and activation function on the outputs. It assumes the kernel and/or bias are drawn from distributions.</p>
 											<p> It uses the Flipout estimator [(Wen et al., 2018)][1], which performs a Monte Carlo approximation of the distribution integrating over the kernel and bias</p>		
-											<P>Upon being built, this layer adds losses (accessible via the losses property) representing the divergences of kernel and/or bias surrogate posteriors and their respective priors. When doing minibatch stochastic optimization, make sure to scale this loss such that it is applied just once per epoch (e.g. if kl is the sum of losses for each element of the batch, you should pass kl / num_examples_per_epoch to your optimizer).</p>
+											<P>Upon being built, this layer adds losses (accessible via the losses property) representing the divergences of kernel and/or bias surrogate posteriors and their respective priors. </p>
 									</aside>
 								</section>
 
@@ -369,6 +369,9 @@ div.fitem {
 									<section  data-background-video="figures/ridgecrest_sequence.mp4" data-background-video-muted>
 									</section>
 									<section data-background-video="figures/stations_grid_zoom.mp4" data-background-video-muted>
+																							<aside class="notes">
+											<p>Our source location grid (Fig. ~\ref{fig:area},b) extents horizontally roughly 11 by 11\,km, with a step size of 1.5\,km. The vertical extent ranges from 2\,km to 10\,km depth, in 2 \,km steps.</p>
+									</aside>
 									</section>
                 </section>
 
