@@ -307,7 +307,7 @@ The moment tensor description with six independent components \citep{madariaga20
 								</ul>
 						</div>
 						<aside class="notes">
-							<p> Geophyiscs always at the forefront of estimation of model robustnes.</p>
+							<p> Geophyiscs always at the forefront of estimation of model robustnes. Our goal is to use a simple as possible neuronal network to avoid overfitting and allow for easy interpretation of the individual learning steps.</p>
 						</aside>
 					</section>
 
@@ -323,9 +323,11 @@ The moment tensor description with six independent components \citep{madariaga20
 									</div>
 									<img src="figures/bnn_presentation_full_all.svg" style="height: 8em;"/>
 																			<aside class="notes">
-											<p>This layer creates a convolution kernel that is convolved (actually cross-correlated) with the layer input to produce a tensor of outputs. It may also include a bias addition and activation function on the outputs. It assumes the kernel and/or bias are drawn from distributions.</p>
+											<p> An overview of the network design is sketched in Fig. \,\ref{fig:network},a and is similar in rationale to \citet{kriegerowski2019deep}. We use three 2-D convolutional flipout layers. The two first layer are sensitive to the information over time only. The first layer is very fine has 8 filters and a 1 by 2 kernel and the second layer has 10 filters and a 1 by 30 kernel. The last 2-D convolutional flipout layer collects information over the station components with 12 filters and a 3 by 1 kernel. We use a dropout of 0.2 between convolutional layers to robustly handle data errors and missing waveform data.
+We downsample the data with a 2-D pooling layer with a 3 by 4 kernel (example activations see Fig. \,\ref{fig:network},c) before flattening the data into a vector and feeding them into a fully connected dense flipout layer. All flipout layers are activated using a Rectified Linear Unit function</p>
+											<p>flipout layer creates a convolution kernel that is convolved (actually cross-correlated) with the layer input to produce a tensor of outputs. It may also include a bias addition and activation function on the outputs. It assumes the kernel and/or bias are drawn from distributions.</p>
 											<p> It uses the Flipout estimator [(Wen et al., 2018)][1], which performs a Monte Carlo approximation of the distribution integrating over the kernel and bias</p>		
-											<P>Upon being built, this layer adds losses (accessible via the losses property) representing the divergences of kernel and/or bias surrogate posteriors and their respective priors. </p>
+											<p>Upon being built, this layer adds losses (accessible via the losses property) representing the divergences of kernel and/or bias surrogate posteriors and their respective priors. </p>
 									</aside>
 								</section>
 
@@ -373,7 +375,12 @@ The moment tensor description with six independent components \citep{madariaga20
 								<img src="figures/scheme_rework.svg" style="height: 12em;"/>
 								<aside class="notes">
 											<p> The moment magnitude is not needed as prior information beforehand for our approach, as all waveforms are normalized. The magnitude of the earthquake can be readily estimated by other methods and approaches \citep{van2020automated}. As a prior knowledge for our inputs the approximate earthquakes location is needed. This has been shown to be deliverable fast by other already established machine learning based algorithms \citep{kriegerowski2019deep,mousavi2020earthquake}. </p>
-									</aside>
+									<p>The probabilistic output of the evaluation of input into an individual BNN allows us to combine inferences. This easily allows us to consider several likely locations and onset times of the earthquake source. 
+
+We consider a location error in horizontal and vertical direction. For each grid point within the error ellipse around the given centroid location we evaluate the respective model with the given input. Note that for each grid point the waveform input is cut differently according to the theoretical arrival times. We perform one evaluation for each grid point and each model with a single input if no timing error exists (see sketch in Fig.\,\ref{fig:scheme}). 
+
+If a error in the onset time is given we simply shift the predicted theoretical arrival times by the expected error.</p>	
+								</aside>
 							</section>
 						</section>
 
@@ -396,6 +403,9 @@ The moment tensor description with six independent components \citep{madariaga20
 												<h5>Comparison of predictions and 8 SCEDC catalog moment tensors</h5>
 											</section>
 											<section data-background-video="figures/mts.mp4" data-background-video-muted>
+														<aside class="notes">
+															<p> 8 full moment tensor solutions from SCEDC are available in the region of interest between July 2019 and December 2020, as well as 198 pure double-couple focal mechanism solutions (Fig. \,\ref{fig:area},b). For this real and unseen waveform data we compare the results of the estimates of our Machine Learning based approach with the focal mechanism and the moment tensors as determined by USGS and SCEDC \citep{hutton2010earthquake}. We therefore validate our approach with unseen data and with independently determined mechanisms and show that we can produce similar source mechanism estimates of the routine SCEDC framework \citep{hauksson2007regional, jordan2003scec} in a few seconds processing time per earthquake. </p>
+													</aside>
 											</section>
 
 											<section>
