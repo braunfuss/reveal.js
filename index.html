@@ -245,16 +245,21 @@ For the fast forward calculations of the synthetic waveforms we use pre-calculat
 												<section>
 													<div class="fitem">
 															<ul>
-																<li>filter waveforms (bandpass 1-5.4 Hz)</li>
+																<li>filter waveforms (bandpass 0.8-5.4 Hz)</li>
 																<li>cut 1s before first phase onset</li>
-																<li>cut 3.5s after first phase onset</li>
+																																<li>cut 4s after first phase onset</li>
+
 															</ul>
+																				<aside class="notes">
+																	<p> We learn our neural networks on the pure synthetic waveforms and do not add noise to the synthetic waveforms, because the characteristics of the noise would be learned as well.
+A triangular source time function is assumed</p>
+																</aside>
 													</div>
 
 												</section>
 
 												<section>
-													<h4>Normalized input for a single earthqauke source</h4>
+													<h4>Normalized input for a single earthquake source</h4>
 
 													<img src="figures/input.svg" style="height: 12em;"/>
 												</section>
@@ -278,6 +283,10 @@ For the fast forward calculations of the synthetic waveforms we use pre-calculat
 																	</ul>
 			                                <img src="figures/lune.svg" style="height: 8em;"/>
 			                        </div>
+																		<aside class="notes">
+																<p>For each set of waveforms forming an input image we want to have a fixed set of parameters assigned to the specifics of the causative source. This are the so called labels we want our networks to learn. 
+The moment tensor description with six independent components \citep{madariaga2007seismic} normally used to describe seismic sources but is not unique. It has been shown that only five unique independent parameters are needed when using spherical coordinates on the unit sphere of the fundamental lune description of the moment tensor to describe all possible sources \citep{tape2015uniform, tape2012geometric}. This fundamental lune parameterzisation of the moment tensor clearly separates the radiation pattern from the source orientation. It also uses cartesian coordinates and is therefore suitable to be sampled by typical machine learning approaches. The five independent parameters (see also supp. Table 1) describing the source in terms of the fundamental lune are: $\kappa$ as the strike angle equivalent, $\sigma$ as the rake angle equivalent of moment tensor slip angle, h as dip angle equivalent and v and w as the lune latitude and co-longitude defining the non-isotropic components. </p>
+																</aside>
 												</section>
 
 											</section>
