@@ -340,31 +340,47 @@ div.fitem {
 
 
 					<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%">
-									<h4>Single Bayesian Neuronal Network design</h4>
+
+						<p style="font-size:80%"> $$ \text{Approximate Kullback-Leibler divergence } \text{by drawing Monte Carlo samples } $$ </p>
+
+								<p style="font-size:80%"> $$ \mathbf{w}^{(i)}  \text{ from variational distribution } q(\mathbf{w} \lvert \boldsymbol{\theta}) $$ </p>
+								<p style="font-size:80%"> $$ \text{with prior distribution } p(\boldsymbol{w}) \text{ and data likeliehood } p(\mathcal{D}|\boldsymbol{w}) $$ </p>
 
 
-									<div class="content">
-										<img src="figures/bnn_scheme.png" style="width: 14em;"/>
-									<div class="details">
-										<div class="fitem">
-											<ul>
-												<li style="font-size:80%">loss function: neg. log-likeliehood</li>
-													<li style="font-size:80%">optimizer: Adam, RELu activations</li>
-													<li style="font-size:80%">Flipout layers (Wen et al., 2018), Gaussian priors from backpropgation</li>
-													<li style="font-size:80%">0.2 dropout to simulate missing data</li>
-											</ul>
 
-											</div>
-										</div>
-									</div>
+									<p style="font-size:80%"> $$
+									\mathcal{F}(\mathcal{D},\boldsymbol{\theta}) \approx {1 \over N} \sum_{i=1}^N \left[
+									\log q(\mathbf{w}^{(i)} \lvert \boldsymbol{\theta}) -
+									\log p(\mathbf{w}^{(i)}) -
+									\log p(\mathcal{D} \lvert \mathbf{w}^{(i)})\right] $$
+								</p>
+									<p style="font-size:80%"> $$ \boldsymbol{\theta} = (\boldsymbol{\mu}, \boldsymbol{\sigma}) $$ </p>
+
+									<img src="figures/bayes.png" style="height: 6em;"/>
+
 								</section>
 
+								<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%" data-transition="fade">
+											Bayes by Backprop
+												<img src="figures/sketch_fwd.svg" style="height: 12em;"/>
+												<p style="font-size:60%">Disclaimer: this is a sketch!<p>
+											</section>
+
+
+													<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%" data-transition="fade">
+																Bayes by Backprop
+																	<img src="figures/sketch.svg" style="height: 12em;"/>
+																	<p style="font-size:60%">Disclaimer: this is a sketch!<p>
+																</section>
 
 
 
 
 
-										<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%">
+
+
+										<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%" >
+											<h4>Single Bayesian Neuronal Network design</h4>
 
 										<div class="content">
 											<img src="figures/bnn_scheme.png" style="width: 14em;"/>
@@ -384,24 +400,49 @@ div.fitem {
 											</div>
 
 										</div>
-										<p style="font-size:80%">Design inspired by Kriegerowski et al., 2019</p>
+										<p style="font-size:60%">Design inspired by Kriegerowski et al., 2019</p>
 
 									</section>
 
 
 									<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%">
+													<h4>Single Bayesian Neuronal Network design</h4>
 
+
+													<div class="content">
+														<img src="figures/bnn_scheme.png" style="width: 14em;"/>
+													<div class="details">
+														<div class="fitem">
+															<ul>
+																<li style="font-size:80%">loss function: neg. log-likeliehood</li>
+																	<li style="font-size:80%">optimizer: Adam, RELu activations</li>
+																	<li style="font-size:80%">Flipout layers (Wen et al., 2018), Gaussian priors from backpropgation</li>
+																	<li style="font-size:80%">0.2 dropout to simulate missing data</li>
+																	<li style="font-size:80%">Learning rate and batch size important</li>
+
+															</ul>
+
+															</div>
+														</div>
+													</div>
+												</section>
+
+
+
+									<section data-background-image="figures/bgr_footer.png" data-background-size="104.5%">
+										Variational inference from multiple BNN's
 									<div class="content">
-										<img src="figures/scheme_rework.svg"/>
+										<img src="figures/scheme_rework.svg" style="width: 14em;"/>
 									<div class="details">
 										<div class="fitem">
 											<ul>
-												<li style="font-size:80%"> learn individual BNN's for a volume of possible source locations (grid) </li>
-												<li style="font-size:80%"> learn individual BNN's for different Earth structure models </li>
-												<li style="font-size:80%"> cut out input waveforms with respect to timing and location uncertainties </li>
+												<br></br>
+												<li style="font-size:70%"> learn individual BNN's for a volume of possible source locations (grid) </li>
+												<li style="font-size:70%"> learn individual BNN's for different Earth structure models </li>
+												<li style="font-size:70%"> cut out input waveforms with respect to timing and location uncertainties </li>
 
 
-													<p style="font-size:80%"> ➜ errors in the Earth structure, timing and location can to be taken into account</p>
+													<p style="font-size:70%"> ➜ errors in the Earth structure, timing and location can to be taken into account</p>
 										</ul>
 
 											</div>
@@ -511,11 +552,14 @@ div.fitem {
 
 										<section>
 											<section  id="dcs" data-background-image="figures/bgr_footer.png" data-background-size="104.5%">
-												<h7>Comparison of predictions and 196 SCEDC catalog focal mechanisms (Mw 2.7 to 4.5)</h7>
+												<h7>Density plot comparing predictions with 196 SCEDC catalog DC's </h7>
+												<li style="font-size:80%">with v= and w=0 </li>
+
 												<img src="figures/dc_mag.png" style="height: 8em;"/>
 												<ul>
-											<li style="font-size:80%">Density plot of lines drawn by the minimum and maximum omega angle distance with SCEDC reference</li>
-												<li style="font-size:80%">with v= and w=0 </li>
+												<li style="font-size:80%"> magnitude dependent performance </li>
+												<li style="font-size:80%"> choice of filters/time windows/SNR </li>
+
 											</ul>
 											</section>
 
